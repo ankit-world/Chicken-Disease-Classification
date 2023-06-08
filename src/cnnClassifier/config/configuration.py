@@ -2,7 +2,7 @@ from cnnClassifier.constants import *
 import os
 from pathlib import Path
 from cnnClassifier.utils.common import read_yaml, create_directories
-from cnnClassifier.entity.config_entity import DataIngestionConfig
+from cnnClassifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig
 from cnnClassifier.exception import CustomException
 import sys
 
@@ -36,6 +36,30 @@ class ConfigurationManager:
             )
 
             return data_ingestion_config
+        
+        except Exception as e:
+            raise CustomException(e, sys)
+        
+
+    def get_prepare_base_model_config(self) -> PrepareBaseModelConfig:
+
+        try: 
+            config = self.config.prepare_base_model
+            
+            create_directories([config.root_dir])
+
+            prepare_base_model_config = PrepareBaseModelConfig(
+                root_dir=Path(config.root_dir),
+                base_model_path=Path(config.base_model_path),
+                updated_base_model_path=Path(config.updated_base_model_path),
+                params_image_size=self.params.IMAGE_SIZE,
+                params_learning_rate=self.params.LEARNING_RATE,
+                params_include_top=self.params.INCLUDE_TOP,
+                params_weights=self.params.WEIGHTS,
+                params_classes=self.params.CLASSES
+            )
+
+            return prepare_base_model_config
         
         except Exception as e:
             raise CustomException(e, sys)
