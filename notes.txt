@@ -1,4 +1,5 @@
 1.Create template.py to create folder structures
 2.Update requirements.txt and setup.py file
 3.Create and update logger and exception files
+4.Update utils folder create common.py file and update the most common functions being used frequently
 
