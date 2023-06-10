@@ -2,7 +2,7 @@ from cnnClassifier.constants import *
 import os
 from pathlib import Path
 from cnnClassifier.utils.common import read_yaml, create_directories
-from cnnClassifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, PrepareCallbacksConfig, TrainingConfig
+from cnnClassifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, PrepareCallbacksConfig, TrainingConfig, EvaluationConfig
 from cnnClassifier.exception import CustomException
 import sys
 import tensorflow as tf
@@ -108,6 +108,21 @@ class ConfigurationManager:
             )
 
             return training_config
+        
+        except Exception as e:
+            raise CustomException(e, sys)
+        
+
+    def get_validation_config(self) -> EvaluationConfig:
+        try:
+            eval_config = EvaluationConfig(
+                path_of_model="artifacts/training/model.h5",
+                training_data="artifacts/data_ingestion/Chicken-fecal-images",
+                all_params=self.params,
+                params_image_size=self.params.IMAGE_SIZE,
+                params_batch_size=self.params.BATCH_SIZE
+            )
+            return eval_config
         
         except Exception as e:
             raise CustomException(e, sys)
